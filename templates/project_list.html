@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block title %}Projects &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}Projects built by {{ profile.display_name }} — {{ profile.headline|default:"Software Engineer" }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HEADER
+     ============================================ -->
+<section class="section" style="padding-bottom: var(--space-xl);">
+    <div class="container">
+        <h1 style="font-size: 2.5rem; margin-bottom: var(--space-sm);">Projects</h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px;">
+            Things I've built. Each project taught me something valuable about writing software that actually works.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================
+     STATS BAR
+     ============================================ -->
+{% if projects %}
+<section class="section" style="padding-top: 0; padding-bottom: var(--space-lg);">
+    <div class="container">
+        <div class="grid-3">
+            <div class="card text-center">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-glow);">{{ projects|length }}</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Total Projects</p>
+            </div>
+            <div class="card text-center">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--accent-glow);">
+                    {{ projects|length|add:"-1"|default:"0" }}+
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Technologies Used</p>
+            </div>
+            <div class="card text-center">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--success);">
+                    {% with live_count=0 %}
+                    {% for project in projects %}
+                        {% if project.is_live %}{{ live_count|add:"1" }}{% endif %}
+                    {% endfor %}
+                    {% endwith %}
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Live & Running</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     PROJECT GRID
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        
+        {% if projects %}
+        <div style="display: grid; gap: var(--space-lg);">
+            {% for project in projects %}
+            <article>
+                <a href="{% url 'user_project_detail' profile.slug project.slug %}" style="text-decoration: none; color: inherit;">
+                    <div class="card {% if project.featured %}card-featured{% endif %}">
+                        
+                        <!-- Top Row: Status + Role + Date -->
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md); flex-wrap: wrap;">
+                            
+                            {% if project.is_live %}
+                            <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 210, 160, 0.1); border: 1px solid rgba(0, 210, 160, 0.2); padding: 3px 10px; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--success);">
+                                <span style="width: 6px; height: 6px; background: var(--success); border-radius: 50%;"></span>
+                                Live
+                            </span>
+                            {% endif %}
+                            
+                            {% if project.featured %}
+                            <span style="display: inline-flex; align-items: center; gap: 4px; background: var(--accent-bg); border: 1px solid var(--accent-border); padding: 3px 10px; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--accent-glow);">
+                                ★ Featured
+                            </span>
+                            {% endif %}
+                            
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ project.get_role_display }}
+                            </span>
+                            
+                            {% if project.completed_date %}
+                            <span style="color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-mono);">
+                                {{ project.completed_date|date:"Y" }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Title -->
+                        <h2 style="font-size: 1.4rem; margin-bottom: var(--space-sm); color: var(--text-primary);">
+                            {{ project.title }}
+                        </h2>
+                        
+                        <!-- Description -->
+                        <p style="color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.7;">
+                            {{ project.short_description }}
+                        </p>
+                        
+                        <!-- Preview of Problem Solved -->
+                        <div style="background: var(--bg); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md); border: 1px solid var(--border);">
+                            <p style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-xs);">
+                                Problem Solved
+                            </p>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
+                                {{ project.problem|truncatechars:150 }}
+                            </p>
+                        </div>
+                        
+                        <!-- Tech Stack -->
+                        <div class="flex flex-wrap gap-sm" style="margin-bottom: var(--space-md);">
+                            {% for tech in project.tech_list %}
+                            <span class="tag">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Links Row -->
+                        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+                            {% if project.live_demo_url %}
+                            <span class="btn btn-primary btn-sm" onclick="event.stopPropagation();" href="{{ project.live_demo_url }}" target="_blank" rel="noopener">
+                                Live Demo &rarr;
+                            </span>
+                            {% endif %}
+                            {% if project.github_url %}
+                            <span class="btn btn-secondary btn-sm" onclick="event.stopPropagation();" href="{{ project.github_url }}" target="_blank" rel="noopener">
+                                Source Code
+                            </span>
+                            {% endif %}
+                            {% if project.swagger_url %}
+                            <span class="btn btn-secondary btn-sm" onclick="event.stopPropagation();" href="{{ project.swagger_url }}" target="_blank" rel="noopener">
+                                API Docs
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="card text-center" style="padding: var(--space-3xl) var(--space-lg);">
+            <div style="font-size: 3rem; margin-bottom: var(--space-md);">🚀</div>
+            <h2 style="margin-bottom: var(--space-sm);">No Projects Yet</h2>
+            <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">
+                Projects will appear here once added. I'm currently building things worth showing — check back soon.
+            </p>
+        </div>
+        {% endif %}
+        
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     BOTTOM CTA
+     ============================================ -->
+<section class="section text-center">
+    <div class="container">
+        <h2 style="margin-bottom: var(--space-sm);">Have a Project in Mind?</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+            I'm always interested in hearing about new challenges and opportunities.
+        </p>
+        <a href="{% url 'user_about' profile.slug %}" class="btn btn-primary">
+            Get in Touch &rarr;
+        </a>
+    </div>
+</section>
+
+{% endblock %}

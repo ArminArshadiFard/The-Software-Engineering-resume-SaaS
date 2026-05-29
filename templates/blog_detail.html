@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}{{ post.excerpt }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     ARTICLE HEADER
+     ============================================ -->
+<section class="section" style="padding-bottom: var(--space-lg);">
+    <div class="container">
+        
+        <!-- Back Link -->
+        <a href="{% url 'user_blog_list' profile.slug %}" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--space-lg);">
+            <span>&larr;</span> All Articles
+        </a>
+        
+        <!-- Title -->
+        <h1 style="font-size: 2.5rem; line-height: 1.2; margin-bottom: var(--space-md);">
+            {{ post.title }}
+        </h1>
+        
+        <!-- Meta -->
+        <div style="display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg);">
+            <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; color: var(--accent-glow); font-weight: 700; font-size: 1.1rem;">
+                    {{ profile.display_name|slice:":1" }}
+                </div>
+                <div>
+                    <div style="font-weight: 600; font-size: 0.95rem;">{{ profile.display_name }}</div>
+                    <div style="color: var(--text-muted); font-size: 0.85rem;">
+                        {{ post.published_date|date:"F j, Y" }} &middot; 
+                        {{ post.content|wordcount|divisibleby:200|add:1 }} min read
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-sm">
+            {% for tag in post.tag_list %}
+            <span class="tag tag-accent">{{ tag }}</span>
+            {% endfor %}
+        </div>
+        
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     ARTICLE CONTENT
+     ============================================ -->
+<section class="section" style="padding-top: var(--space-xl);">
+    <div class="container">
+        <article style="max-width: 720px; margin: 0 auto;">
+            
+            <!-- Excerpt highlight -->
+            <div class="card card-featured" style="margin-bottom: var(--space-xl); border-left: 3px solid var(--accent);">
+                <p style="font-size: 1.1rem; color: var(--text-primary); margin: 0; font-style: italic;">
+                    {{ post.excerpt }}
+                </p>
+            </div>
+            
+            <!-- Main content with typography styles -->
+            <div style="line-height: 1.85; font-size: 1.05rem; color: var(--text-primary);">
+                {{ post.content|linebreaks }}
+            </div>
+            
+        </article>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     SHARE & NAVIGATION
+     ============================================ -->
+<section class="section">
+    <div class="container text-center">
+        
+        <p style="color: var(--text-muted); margin-bottom: var(--space-md);">
+            Share this article
+        </p>
+        <div class="flex items-center gap-md" style="justify-content: center; margin-bottom: var(--space-xl);">
+            <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" 
+               target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+                Twitter
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" 
+               target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
+                LinkedIn
+            </a>
+            <button onclick="navigator.clipboard.writeText(window.location.href)" class="btn btn-secondary btn-sm">
+                Copy Link
+            </button>
+        </div>
+        
+        <a href="{% url 'user_blog_list' profile.slug %}" class="btn btn-ghost">
+            &larr; Back to All Articles
+        </a>
+        
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     AUTHOR CARD
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="card card-featured" style="max-width: 600px; margin: 0 auto;">
+            <div style="display: flex; gap: var(--space-md); align-items: center;">
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; color: var(--accent-glow); font-weight: 700; font-size: 1.5rem; flex-shrink: 0;">
+                    {{ profile.display_name|slice:":1" }}
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 2px;">{{ profile.display_name }}</h3>
+                    {% if profile.headline %}
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                        {{ profile.headline }}
+                    </p>
+                    {% endif %}
+                    <div class="flex gap-sm">
+                        {% if profile.github_url %}
+                        <a href="{{ profile.github_url }}" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">GitHub</a>
+                        {% endif %}
+                        {% if profile.linkedin_url %}
+                        <a href="{{ profile.linkedin_url }}" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">LinkedIn</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

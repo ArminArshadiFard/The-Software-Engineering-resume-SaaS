@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}Blog &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}Technical articles and thoughts by {{ profile.display_name }} on software development, Django, and backend engineering.{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HEADER
+     ============================================ -->
+<section class="section" style="padding-bottom: var(--space-xl);">
+    <div class="container">
+        <h1 style="font-size: 2.5rem; margin-bottom: var(--space-sm);">Writing</h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px;">
+            Thoughts on backend development, Django, and lessons learned from building real software.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================
+     ARTICLE LIST
+     ============================================ -->
+<section class="section" style="padding-top: 0;">
+    <div class="container">
+        
+        {% if posts %}
+        <div style="display: grid; gap: var(--space-lg);">
+            {% for post in posts %}
+            <article>
+                <a href="{% url 'user_blog_detail' profile.slug post.slug %}" style="text-decoration: none; color: inherit;">
+                    <div class="card" style="transition: all var(--transition-base); cursor: pointer;">
+                        
+                        <!-- Date & Read Time -->
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+                            <span style="color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-mono);">
+                                {{ post.published_date|date:"d M Y" }}
+                            </span>
+                            <span style="color: var(--border);">&middot;</span>
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">
+                                {{ post.content|wordcount|divisibleby:200|add:1 }} min read
+                            </span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h2 style="font-size: 1.4rem; margin-bottom: var(--space-sm); color: var(--text-primary);">
+                            {{ post.title }}
+                        </h2>
+                        
+                        <!-- Excerpt -->
+                        <p style="color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.7;">
+                            {{ post.excerpt }}
+                        </p>
+                        
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-sm">
+                            {% for tag in post.tag_list %}
+                            <span class="tag tag-accent">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Read More -->
+                        <div style="margin-top: var(--space-md);">
+                            <span style="color: var(--accent); font-weight: 600; font-size: 0.95rem;">
+                                Read article &rarr;
+                            </span>
+                        </div>
+                        
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="card text-center" style="padding: var(--space-3xl) var(--space-lg);">
+            <div style="font-size: 3rem; margin-bottom: var(--space-md);">📝</div>
+            <h2 style="margin-bottom: var(--space-sm);">No Articles Yet</h2>
+            <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">
+                I'm working on my first article. Topics I plan to cover include Django performance, 
+                database optimization, and lessons from real projects.
+            </p>
+            <div style="margin-top: var(--space-lg);">
+                <span class="tag tag-accent">Coming Soon</span>
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>
+</section>
+
+<!-- ============================================
+     TOPICS
+     ============================================ -->
+{% if posts %}
+<div class="container"><div class="divider"></div></div>
+
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Topics I Write About</h2>
+        </div>
+        <div class="flex flex-wrap gap-md">
+            <span class="tag tag-accent">Django</span>
+            <span class="tag">Backend Development</span>
+            <span class="tag">Database Design</span>
+            <span class="tag">API Architecture</span>
+            <span class="tag">Performance</span>
+            <span class="tag">Docker</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Software Engineering</span>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     NEWSLETTER / SUBSCRIBE
+     ============================================ -->
+<section class="section text-center">
+    <div class="container">
+        <div class="card card-featured" style="max-width: 500px; margin: 0 auto;">
+            <div style="font-size: 2rem; margin-bottom: var(--space-sm);">📬</div>
+            <h3 style="margin-bottom: var(--space-sm);">Stay Updated</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0;">
+                New articles published occasionally. No spam, just thoughtful content about building better software.
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

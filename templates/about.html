@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% block title %}About &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}About {{ profile.display_name }} — {{ profile.headline|default:"Software Engineer" }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="section" style="padding-top: var(--space-3xl); padding-bottom: var(--space-xl);">
+    <div class="container">
+        <h1 style="font-size: 2.5rem; margin-bottom: var(--space-sm);">
+            About <span class="glow-text">{{ profile.display_name }}</span>
+        </h1>
+        {% if profile.headline %}
+        <p style="font-size: 1.2rem; color: var(--text-secondary);">
+            {{ profile.headline }}
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ============================================
+     BIO
+     ============================================ -->
+{% if profile.bio %}
+<section class="section" style="padding-top: 0; padding-bottom: var(--space-xl);">
+    <div class="container">
+        <div class="card card-featured">
+            <div style="max-width: 700px; line-height: 1.8; font-size: 1.05rem;">
+                {{ profile.bio|linebreaks }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     WORK PHILOSOPHY
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>How I Work</h2>
+            <p>The principles that guide how I build software.</p>
+        </div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-sm);">🎯</div>
+                <h3 style="margin-bottom: var(--space-sm);">Problem First, Code Second</h3>
+                <p style="font-size: 0.95rem; margin: 0;">
+                    I don't write a single line until I fully understand the problem. 
+                    I ask questions, dig into the "why," and only then design the solution.
+                </p>
+            </div>
+            
+            <div class="card">
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-sm);">🧪</div>
+                <h3 style="margin-bottom: var(--space-sm);">Tested Code is Trusted Code</h3>
+                <p style="font-size: 0.95rem; margin: 0;">
+                    If it's not tested, I don't consider it done. Tests aren't optional — 
+                    they're the proof that what I built actually works.
+                </p>
+            </div>
+            
+            <div class="card">
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-sm);">📦</div>
+                <h3 style="margin-bottom: var(--space-sm);">Ship Early, Iterate Fast</h3>
+                <p style="font-size: 0.95rem; margin: 0;">
+                    Perfection is the enemy of progress. I ship a working version fast, 
+                    then improve based on real feedback — not assumptions.
+                </p>
+            </div>
+            
+            <div class="card">
+                <div style="font-size: 1.5rem; margin-bottom: var(--space-sm);">📖</div>
+                <h3 style="margin-bottom: var(--space-sm);">Code is Communication</h3>
+                <p style="font-size: 0.95rem; margin: 0;">
+                    I write code for humans first, machines second. Clear naming, 
+                    thoughtful comments, and clean architecture matter.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     TECH STACK
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Tech I Use</h2>
+            <p>Tools and technologies I reach for when building.</p>
+        </div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    ⚙️ Core Stack
+                </h3>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="skill-item skill-expert skill-core">Python</span>
+                    <span class="skill-item skill-expert skill-core">Django</span>
+                    <span class="skill-item skill-expert">PostgreSQL</span>
+                    <span class="skill-item skill-proficient">Redis</span>
+                    <span class="skill-item skill-proficient">Docker</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    🎨 Frontend
+                </h3>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="skill-item skill-proficient">HTML/CSS</span>
+                    <span class="skill-item skill-proficient">JavaScript</span>
+                    <span class="skill-item skill-comfortable">HTMX</span>
+                    <span class="skill-item skill-comfortable">Tailwind CSS</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    🚀 DevOps & Tools
+                </h3>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="skill-item skill-proficient">Git</span>
+                    <span class="skill-item skill-proficient">Linux</span>
+                    <span class="skill-item skill-comfortable">Nginx</span>
+                    <span class="skill-item skill-comfortable">GitHub Actions</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    📚 Currently Exploring
+                </h3>
+                <div class="flex flex-wrap gap-sm">
+                    <span class="skill-item skill-comfortable">Go</span>
+                    <span class="skill-item skill-comfortable">FastAPI</span>
+                    <span class="skill-item skill-comfortable">WebSockets</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     CURRENTLY LEARNING
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Currently Learning</h2>
+            <p>I believe great engineers never stop learning. Here's what I'm diving into now.</p>
+        </div>
+        
+        {% for item in currently_learning %}
+        <div class="card mb-md" style="border-left: 3px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-sm);">
+                <div>
+                    <h3 style="margin-bottom: var(--space-xs);">{{ item.topic }}</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: var(--space-sm);">{{ item.description }}</p>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.85rem; white-space: nowrap;">
+                    Since {{ item.started_date|date:"F Y" }}
+                </span>
+            </div>
+            {% if item.resource %}
+            <a href="{{ item.resource }}" target="_blank" rel="noopener" style="font-size: 0.9rem;">
+                View learning resource &rarr;
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="card text-center">
+            <p style="color: var(--text-muted); margin: 0;">Always learning something new. Check back soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     CONTACT
+     ============================================ -->
+<section class="section text-center">
+    <div class="container">
+        <h2 style="margin-bottom: var(--space-sm);">Get in Touch</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); max-width: 500px; margin-left: auto; margin-right: auto;">
+            I'm always open to interesting conversations and opportunities. 
+            Whether you have a project in mind or just want to say hi, reach out.
+        </p>
+        <div class="flex items-center gap-md" style="justify-content: center; flex-wrap: wrap;">
+            {% if profile.email %}
+            <a href="mailto:{{ profile.email }}" class="btn btn-primary">
+                Send Email
+            </a>
+            {% endif %}
+            {% if profile.github_url %}
+            <a href="{{ profile.github_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                GitHub
+            </a>
+            {% endif %}
+            {% if profile.linkedin_url %}
+            <a href="{{ profile.linkedin_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                LinkedIn
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

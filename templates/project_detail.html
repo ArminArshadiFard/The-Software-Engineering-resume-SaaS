@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.title }} &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}{{ project.short_description }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HEADER
+     ============================================ -->
+<section class="section" style="padding-bottom: var(--space-lg);">
+    <div class="container">
+
+        <!-- Back Link -->
+        <a href="{% url 'user_project_list' profile.slug %}" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--space-lg);">
+            <span>&larr;</span> All Projects
+        </a>
+
+        <!-- Status Badges -->
+        <div style="display: flex; gap: var(--space-sm); margin-bottom: var(--space-md); flex-wrap: wrap;">
+            {% if project.is_live %}
+            <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 210, 160, 0.1); border: 1px solid rgba(0, 210, 160, 0.2); padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.85rem; color: var(--success);">
+                <span style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px rgba(0, 210, 160, 0.5);"></span>
+                Live & Running
+            </span>
+            {% endif %}
+            {% if project.featured %}
+            <span style="display: inline-flex; align-items: center; gap: 4px; background: var(--accent-bg); border: 1px solid var(--accent-border); padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.85rem; color: var(--accent-glow);">
+                ★ Featured Project
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- Title -->
+        <h1 style="font-size: 2.5rem; line-height: 1.2; margin-bottom: var(--space-sm);">
+            {{ project.title }}
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">
+            {{ project.short_description }}
+        </p>
+
+        <!-- Meta Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg);">
+
+            <div>
+                <p style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Role</p>
+                <p style="font-weight: 600;">{{ project.get_role_display }}</p>
+            </div>
+
+            {% if project.duration_weeks %}
+            <div>
+                <p style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Duration</p>
+                <p style="font-weight: 600;">{{ project.duration_weeks }} weeks</p>
+            </div>
+            {% endif %}
+
+            {% if project.completed_date %}
+            <div>
+                <p style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Completed</p>
+                <p style="font-weight: 600; font-family: var(--font-mono);">{{ project.completed_date|date:"M Y" }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="flex flex-wrap gap-sm" style="margin-bottom: var(--space-lg);">
+            {% for tech in project.tech_list %}
+            <span class="tag tag-accent">{{ tech }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-sm flex-wrap">
+            {% if project.live_demo_url %}
+            <a href="{{ project.live_demo_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+                View Live Demo &rarr;
+            </a>
+            {% endif %}
+            {% if project.github_url %}
+            <a href="{{ project.github_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                View Source Code
+            </a>
+            {% endif %}
+            {% if project.swagger_url %}
+            <a href="{{ project.swagger_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                API Documentation
+            </a>
+            {% endif %}
+            {% if project.video_demo_url %}
+            <a href="{{ project.video_demo_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                Watch Walkthrough
+            </a>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     SCREENSHOTS
+     ============================================ -->
+{% if project.has_screenshots %}
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Screenshots</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md);">
+            {% for screenshot in project.screenshots.all %}
+            <div class="card" style="padding: var(--space-sm); overflow: hidden;">
+                <img src="{{ screenshot.image.url }}" alt="{{ screenshot.caption|default:project.title }}"
+                     style="width: 100%; border-radius: var(--radius-md); display: block;"
+                     loading="lazy">
+                {% if screenshot.caption %}
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: var(--space-sm); margin-bottom: 0;">
+                    {{ screenshot.caption }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<div class="container"><div class="divider"></div></div>
+{% endif %}
+
+<!-- ============================================
+     THE PROBLEM
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div style="max-width: 720px;">
+            <div class="section-header">
+                <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+                    <span style="font-size: 1.5rem;">🔴</span>
+                    <h2 style="margin: 0;">The Problem</h2>
+                </div>
+            </div>
+            <div class="card" style="border-left: 3px solid #e94560;">
+                <div style="line-height: 1.8; font-size: 1.05rem;">
+                    {{ project.problem|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     THE SOLUTION
+     ============================================ -->
+<section class="section" style="padding-top: 0;">
+    <div class="container">
+        <div style="max-width: 720px;">
+            <div class="section-header">
+                <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+                    <span style="font-size: 1.5rem;">🟢</span>
+                    <h2 style="margin: 0;">The Solution</h2>
+                </div>
+            </div>
+            <div class="card" style="border-left: 3px solid var(--success);">
+                <div style="line-height: 1.8; font-size: 1.05rem;">
+                    {{ project.solution|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if project.architecture_decision %}
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     ARCHITECTURE DECISION
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div style="max-width: 720px;">
+            <div class="section-header">
+                <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+                    <span style="font-size: 1.5rem;">🏗️</span>
+                    <h2 style="margin: 0;">Key Architecture Decision</h2>
+                </div>
+                <p>Why I chose this approach and what alternatives I considered.</p>
+            </div>
+            <div class="card card-featured">
+                <div style="line-height: 1.8; font-size: 1.05rem;">
+                    {{ project.architecture_decision|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if project.lessons_learned %}
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     LESSONS LEARNED
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div style="max-width: 720px;">
+            <div class="section-header">
+                <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+                    <span style="font-size: 1.5rem;">📖</span>
+                    <h2 style="margin: 0;">Lessons Learned</h2>
+                </div>
+                <p>What I'd do differently and what I'll take to my next project.</p>
+            </div>
+            <div class="card">
+                <div style="line-height: 1.8; font-size: 1.05rem;">
+                    {{ project.lessons_learned|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     VIDEO WALKTHROUGH
+     ============================================ -->
+{% if project.video_demo_url %}
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Video Walkthrough</h2>
+        </div>
+        <div class="card" style="overflow: hidden; padding: 0; border: 1px solid var(--border);">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                <iframe src="{{ project.video_demo_url }}"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container"><div class="divider"></div></div>
+{% endif %}
+
+<!-- ============================================
+     BOTTOM NAVIGATION
+     ============================================ -->
+<section class="section text-center">
+    <div class="container">
+        <div class="flex items-center gap-md" style="justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'user_project_list' profile.slug %}" class="btn btn-ghost">
+                &larr; All Projects
+            </a>
+            {% if project.github_url %}
+            <a href="{{ project.github_url }}" class="btn btn-secondary" target="_blank" rel="noopener">
+                View on GitHub
+            </a>
+            {% endif %}
+            {% if project.live_demo_url %}
+            <a href="{{ project.live_demo_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+                Open Live Demo &rarr;
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

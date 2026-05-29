@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}Stats &mdash; {{ profile.display_name }}{% endblock %}
+{% block meta_description %}Live statistics and metrics for {{ profile.display_name }}'s portfolio and projects.{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HEADER
+     ============================================ -->
+<section class="section" style="padding-bottom: var(--space-xl);">
+    <div class="container">
+        <h1 style="font-size: 2.5rem; margin-bottom: var(--space-sm);">Site Statistics</h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px;">
+            Transparency matters. Here's what's under the hood — live performance data and content metrics for this site.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================
+     CONTENT METRICS
+     ============================================ -->
+<section class="section" style="padding-top: 0;">
+    <div class="container">
+        <div class="section-header">
+            <h2>Content Overview</h2>
+            <p>What's published and available to explore.</p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="card text-center">
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-glow); margin-bottom: var(--space-xs);">
+                    {{ total_projects }}
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-xs);">Projects</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Built & documented</p>
+            </div>
+            
+            <div class="card text-center">
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-glow); margin-bottom: var(--space-xs);">
+                    {{ total_posts }}
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-xs);">Articles</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Published & public</p>
+            </div>
+            
+            <div class="card text-center">
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent-glow); margin-bottom: var(--space-xs);">
+                    {% if profile.bio %}{{ profile.bio|wordcount }}{% else %}0{% endif %}
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-xs);">Words in Bio</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">The story so far</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     TECHNICAL METRICS
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Technical Details</h2>
+            <p>How this site is built and performs.</p>
+        </div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    ⚡ Performance
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Database</span>
+                        <span style="font-family: var(--font-mono); color: var(--text-primary);">SQLite</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Response time</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">{{ db_time_ms }}ms</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Rendering</span>
+                        <span style="font-family: var(--font-mono); color: var(--text-primary);">Server-side</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: var(--text-secondary);">JavaScript</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">Zero frameworks</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    🔧 Stack
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Backend</span>
+                        <span style="font-family: var(--font-mono); color: var(--text-primary);">Django 5.0</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Language</span>
+                        <span style="font-family: var(--font-mono); color: var(--text-primary);">Python 3.12</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Frontend</span>
+                        <span style="font-family: var(--font-mono); color: var(--text-primary);">HTML + CSS only</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: var(--text-secondary);">Hosting</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">Ready to deploy</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    🔒 Privacy
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Analytics</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">None</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Cookies</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">Zero</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Trackers</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">None</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: var(--text-secondary);">Data collected</span>
+                        <span style="font-family: var(--font-mono); color: var(--success);">Nothing</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                    ✅ Best Practices
+                </h3>
+                <ul style="list-style: none;">
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Semantic HTML</span>
+                        <span style="color: var(--success);">✓</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Mobile responsive</span>
+                        <span style="color: var(--success);">✓</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--text-secondary);">Dark mode</span>
+                        <span style="color: var(--success);">✓</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span style="color: var(--text-secondary);">No CSS framework</span>
+                        <span style="color: var(--success);">✓</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     DESIGN PHILOSOPHY
+     ============================================ -->
+<section class="section">
+    <div class="container" style="max-width: 600px;">
+        <div class="section-header text-center">
+            <h2>Why This Site Is Fast</h2>
+        </div>
+        
+        <div class="card card-featured">
+            <ul style="list-style: none;">
+                <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <strong style="color: var(--text-primary);">No JavaScript frameworks.</strong>
+                    <span style="color: var(--text-secondary); display: block; margin-top: 2px;">HTML rendered on the server. Zero client-side overhead.</span>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <strong style="color: var(--text-primary);">No external dependencies.</strong>
+                    <span style="color: var(--text-secondary); display: block; margin-top: 2px;">One font from Google Fonts. Everything else is inline.</span>
+                </li>
+                <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <strong style="color: var(--text-primary);">Minimal CSS.</strong>
+                    <span style="color: var(--text-secondary); display: block; margin-top: 2px;">Custom design system with zero unused styles.</span>
+                </li>
+                <li style="padding: 12px 0;">
+                    <strong style="color: var(--text-primary);">Server-rendered.</strong>
+                    <span style="color: var(--text-secondary); display: block; margin-top: 2px;">Django templates with efficient database queries.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<!-- ============================================
+     GITHUB LINK
+     ============================================ -->
+
+<section class="section text-center">
+    <div class="container">
+        <h2 style="margin-bottom: var(--space-sm);">View the Source</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+            This entire site is open source. See how it's built, suggest improvements, or use it for your own portfolio.
+        </p>
+        <a href="https://github.com/yourusername/resume-website" class="btn btn-primary" target="_blank" rel="noopener">
+            View on GitHub &rarr;
+        </a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile.display_name }} &mdash; {{ profile.headline|default:"Software Engineer" }}{% endblock %}
+{% block meta_description %}{{ profile.display_name }} — {{ profile.headline|default:"Software Engineer" }}. {{ profile.bio|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="section" style="padding-top: var(--space-3xl); padding-bottom: var(--space-2xl);">
+    <div class="container text-center">
+
+        <!-- Availability Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 210, 160, 0.08); border: 1px solid rgba(0, 210, 160, 0.2); padding: 6px 16px; border-radius: var(--radius-full); font-size: 0.85rem; color: var(--success); margin-bottom: var(--space-lg);">
+            <span style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px rgba(0, 210, 160, 0.5);"></span>
+            Available for projects
+        </div>
+
+        <!-- Name -->
+        <h1 style="font-size: 3rem; margin-bottom: var(--space-md);" class="glow-text">
+            {{ profile.display_name }}
+        </h1>
+
+        <!-- Headline -->
+        <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto var(--space-xl); line-height: 1.5;">
+            {{ profile.headline|default:"I build backend systems that scale without breaking." }}
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex items-center gap-md" style="justify-content: center;">
+            <a href="{% url 'user_project_list' profile.slug %}" class="btn btn-primary">
+                View My Work
+                <span style="font-size: 0.9em;">&rarr;</span>
+            </a>
+            <a href="{% url 'user_about' profile.slug %}" class="btn btn-secondary">
+                About Me
+            </a>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="flex items-center gap-md" style="justify-content: center; margin-top: var(--space-lg);">
+            {% if profile.github_url %}
+            <a href="{{ profile.github_url }}" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">
+                GitHub
+            </a>
+            {% endif %}
+            {% if profile.linkedin_url %}
+            <a href="{{ profile.linkedin_url }}" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">
+                LinkedIn
+            </a>
+            {% endif %}
+            {% if profile.email %}
+            <a href="mailto:{{ profile.email }}" class="btn btn-ghost btn-sm">
+                Email
+            </a>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+<div class="container">
+    <div class="divider"></div>
+</div>
+
+<!-- ============================================
+     SKILLS
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Technical Skills</h2>
+            <p>Tools and technologies I work with daily.</p>
+        </div>
+
+        {% for category in skill_categories %}
+        <div class="card mb-md">
+            <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-md);">
+                {{ category.icon }} {{ category.name }}
+            </h3>
+            <div class="flex flex-wrap gap-sm">
+                {% for skill in category.skills.all %}
+                <span class="skill-item
+                    {% if skill.proficiency >= 4 %}skill-expert
+                    {% elif skill.proficiency >= 3 %}skill-proficient
+                    {% else %}skill-comfortable
+                    {% endif %}
+                    {% if skill.is_core %}skill-core{% endif %}">
+                    {{ skill.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="card text-center">
+            <p style="color: var(--text-muted); margin: 0;">Skills will appear here once added.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="container">
+    <div class="divider"></div>
+</div>
+
+<!-- ============================================
+     FEATURED PROJECTS
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <p>Selected work that demonstrates my approach to building software.</p>
+        </div>
+
+        {% for project in featured_projects %}
+        <a href="{% url 'user_project_detail' profile.slug project.slug %}" style="text-decoration: none; color: inherit;">
+            <article class="card card-featured mb-md">
+                <div class="flex items-center" style="justify-content: space-between; margin-bottom: var(--space-sm);">
+                    <h3 style="margin: 0;">{{ project.title }}</h3>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">
+                        {% if project.live_demo_url %}Live &rarr;{% endif %}
+                    </span>
+                </div>
+                <p style="margin-bottom: var(--space-md);">{{ project.short_description }}</p>
+                <div class="flex flex-wrap gap-sm">
+                    {% for tech in project.tech_list %}
+                    <span class="tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </article>
+        </a>
+        {% empty %}
+        <div class="card text-center">
+            <p style="color: var(--text-muted); margin: 0;">Projects coming soon.</p>
+        </div>
+        {% endfor %}
+
+        {% if featured_projects %}
+        <div style="text-align: center; margin-top: var(--space-lg);">
+            <a href="{% url 'user_project_list' profile.slug %}" class="btn btn-ghost">
+                View All Projects &rarr;
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<div class="container">
+    <div class="divider"></div>
+</div>
+
+<!-- ============================================
+     CURRENTLY LEARNING
+     ============================================ -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Currently Learning</h2>
+            <p>What I'm exploring right now to stay sharp and grow.</p>
+        </div>
+
+        <div class="grid-2">
+            {% for item in currently_learning %}
+            <div class="card">
+                <h3 style="font-size: 1.05rem; margin-bottom: var(--space-sm);">{{ item.topic }}</h3>
+                <p style="font-size: 0.9rem; margin-bottom: var(--space-sm);">{{ item.description }}</p>
+                {% if item.resource %}
+                <a href="{{ item.resource }}" target="_blank" rel="noopener" style="font-size: 0.85rem;">
+                    Learning resource &rarr;
+                </a>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="card text-center" style="grid-column: 1 / -1;">
+                <p style="color: var(--text-muted); margin: 0;">Always learning. Updates coming soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="divider"></div>
+</div>
+
+<!-- ============================================
+     BOTTOM CTA
+     ============================================ -->
+<section class="section text-center">
+    <div class="container">
+        <h2 style="margin-bottom: var(--space-sm);">Let's Work Together</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+            I'm currently available for freelance projects and interesting opportunities.
+        </p>
+        <div class="flex items-center gap-md" style="justify-content: center;">
+            {% if profile.email %}
+            <a href="mailto:{{ profile.email }}" class="btn btn-primary">Get in Touch</a>
+            {% endif %}
+            <a href="{% url 'user_project_list' profile.slug %}" class="btn btn-secondary">See My Work</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

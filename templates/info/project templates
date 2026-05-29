@@ -1,0 +1,33 @@
+Title: E-Commerce Platform
+Slug: (auto-fills)
+Short Description: A full-featured online store built with Django templates and PostgreSQL.
+
+The Problem:
+"Small businesses in my area had no online presence. They were losing customers
+to larger competitors who had e-commerce capabilities. I wanted to build a
+solution that was affordable and easy for non-technical owners to manage."
+
+The Solution:
+"Built a complete e-commerce platform with Django templates. The system handles
+product listings, cart management, user authentication, and order processing.
+Used Django's class-based views for clean, maintainable code and implemented
+custom template tags for reusable UI components."
+
+Architecture Decision:
+"Chose Django Templates over a JavaScript framework because the client needed
+SEO-friendly pages and fast initial load times. Django's template inheritance
+allowed me to create a consistent layout while keeping the code DRY. Used
+WhiteNoise for static file serving to simplify deployment."
+
+Lessons Learned:
+"This project taught me the importance of proper model design. Initially, I
+designed the Product and Order models poorly, which led to complex queries.
+After refactoring to use foreign keys properly and adding database indexes,
+page load times improved by 60%. I also learned to use Django's select_related
+and prefetch_related to avoid the N+1 query problem."
+
+Tech Stack: Django, Django Templates, PostgreSQL, WhiteNoise, Bootstrap, Stripe
+
+GitHub URL: https://github.com/yourusername/ecommerce-project
+
+Featured: ✅ Checked

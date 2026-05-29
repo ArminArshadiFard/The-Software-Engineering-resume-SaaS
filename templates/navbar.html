@@ -1,0 +1,12 @@
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="{% url 'user_home' profile.slug %}" class="navbar-brand">
+            {{ profile.display_name }}
+        </a>
+        <ul class="navbar-links">
+            <li><a href="{% url 'user_home' profile.slug %}" {% if request.resolver_match.url_name == 'user_home' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="{% url 'user_project_list' profile.slug %}" {% if 'project' in request.resolver_match.url_name %}class="active"{% endif %}>Projects</a></li>
+            <li><a href="{% url 'user_about' profile.slug %}" {% if request.resolver_match.url_name == 'user_about' %}class="active"{% endif %}>About</a></li>
+        </ul>
+    </div>
+</nav>
